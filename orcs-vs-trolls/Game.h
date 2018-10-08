@@ -26,15 +26,30 @@ private:
 		TROLLS
 	};
 
-	char textInput;
-	bool loop;
-	Side chosenSide;
+	// Loot types
+	enum class LootType
+	{
+		KNIFE,
+		SHIELD,
+		SUDOKU_PUZZLE,
+		BOTTLE_OF_BEER,
+		RABBIT_FOOT
+	};
 
-	void createCharacters();
-	void print(PrintType t_type);
-	void print(std::string t_string);
-	void introduction();
-	void chooseSide();
+	LootType lootTable[5];
 
-	int numberInput(std::string t_input);
+	char textInput; // Input char
+	bool loop;// Used to break out of loops
+	Side chosenSide; // Enum type to store chosen side					 
+	Orc orc; // Create Orc	
+	Troll troll; // Create Troll
+
+	void createCharacters(); // Setup the characters
+	void print(PrintType t_type); // Function to print a line space or decoration line
+	void print(std::string t_string); // Overloaded function to print text
+	void introduction(); // Game intro
+	void chooseSide(); // Choose Orcs or Trolls
+	void beginBattle(); // Start main game
+	void showStats(Side t_side); // Display player stats
+	int numberInput(std::string t_input); // Number input with validation
 };

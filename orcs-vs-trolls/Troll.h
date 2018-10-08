@@ -8,5 +8,6 @@ class Troll : public Character
 public:
 	Troll();
 	~Troll();
-	void fly();
+	void fly() { std::cout << "The Troll is flying....." << std::endl; }
+	void specialAbility();
 };

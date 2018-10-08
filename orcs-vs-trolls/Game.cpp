@@ -26,38 +26,40 @@ void Game::run()
 	createCharacters();
 	introduction();
 	chooseSide();
+	beginBattle();
 }
 					 
 void Game::createCharacters()
 {
-	cout << "Let go virtual" << endl;
+	//cout << "Let go virtual" << endl;
 	//Character character;
 	//character.flip();
 	//character.walk();
 
-	cout << "Let go create an Orc" << endl;
-	Orc orc;
-	orc.walk();
-	orc.fly();
-	orc.flip();
+	//Orc orc;
+	//orc.walk();
+	//orc.fly();
+	//orc.flip();
+	//print(PrintType::LINE);
 
-	cout << "Let go create an Troll" << endl;
-	Troll troll;
-	troll.walk();
-	troll.fly();
-	troll.flip();
+	//cout << "Let go create an Troll" << endl;
+	//Troll troll;
+	//troll.walk();
+	//troll.fly();
+	//troll.flip();
+	//print(PrintType::LINE);
 
-	Character* npc = &orc;
-	npc->flip();
-	npc->fly();
-	npc->walk();
+	//Character* npc = &orc;
+	//npc->flip();
+	//npc->fly();
+	//npc->walk();
+	//print(PrintType::LINE);
 
-	npc = &troll;
-	npc->flip();
-	npc->fly();
-	npc->walk();
-
-	// cin.get();
+	//npc = &troll;
+	//npc->flip();
+	//npc->fly();
+	//npc->walk();
+	//print(PrintType::LINE);
 }
 
 // Overloaded function to insert a line or a break
@@ -88,13 +90,13 @@ void Game::introduction()
 	print("ORCS VS TROLLS");
 	print(PrintType::LINE);
 	print("Welcome to Orcs vs Trolls,  a turn-based game where Orcs battle");
-	print("Trolls over the ownership of an island called Travania. You can");
-	print("choose to fight as either the Orcs or Trolls,  and you must use");
-	print("your skills to try and defeat your opponents, and take over the");
-	print("island of Travania.");
+	print("Trolls over  something that  happened so  long ago, they  can't");
+	print("actually remember  what it was. Take control of either the Orcs");
+	print("or the Trolls, and destroy the  opposition by  pressing various");
+	print("keys on your 'enchanted' keyboard.....");
 	print(PrintType::LINE);
-	print("Orcs vs Trolls is a turn-based game.");
-	print("Blah, blah, blah.....");
+	print("All controls needed are displayed throughout the game.");
+	print("Now go forth, and press some keys!!!!!");
 	print(PrintType::LINE);
 }
 
@@ -110,12 +112,18 @@ void Game::chooseSide()
 		{
 		case 'O':
 		case 'o':
+			print(PrintType::LINE);
+			print("You have chosen to play as the Orcs.");
+			print(PrintType::LINE);
 			chosenSide = Side::ORCS;
 			loop = false;
 			break;
 
 		case 'T':
 		case 't':
+			print(PrintType::LINE);
+			print("You have chosen to play as the Trolls.");
+			print(PrintType::LINE);
 			chosenSide = Side::TROLLS;
 			loop = false;
 			break;
@@ -129,10 +137,50 @@ void Game::chooseSide()
 		}
 	}
 
+	print(PrintType::SPACE);
+	system("Pause");
+	system("CLS");
+}
+
+// Start main game
+void Game::beginBattle()
+{
+	showStats(chosenSide);
 	system("Pause");
 }
 
- // Take user input for numbers
+// Display player stats
+void Game::showStats(Side t_side)
+{
+	print(PrintType::LINE);
+
+	switch (t_side)
+	{
+	case Side::ORCS:
+		print("YOUR STATS (ORC)");
+		print("----------------");
+		print("Attack:       " + std::to_string(orc.attributes.attack));
+		print("Defense:      " + std::to_string(orc.attributes.defence));
+		print("Intelligence: " + std::to_string(orc.attributes.intelligence));
+		print("Charisma:     " + std::to_string(orc.attributes.charisma));
+		print("Luck:         " + std::to_string(orc.attributes.luck));
+		print(PrintType::LINE);
+		break;
+
+	case Side::TROLLS:
+		print("YOUR STATS (TROLL)");
+		print("------------------");
+		print("Attack:       " + std::to_string(troll.attributes.attack));
+		print("Defense:      " + std::to_string(troll.attributes.defence));
+		print("Intelligence: " + std::to_string(troll.attributes.intelligence));
+		print("Charisma:     " + std::to_string(troll.attributes.charisma));
+		print("Luck:         " + std::to_string(troll.attributes.luck));
+		print(PrintType::LINE);
+		break;
+	}
+}
+
+// Take user input for numbers
  int Game::numberInput(std::string t_input)
 {
 	int n;
@@ -149,4 +197,4 @@ void Game::chooseSide()
 	}
 
 	return n;
-}
+ }

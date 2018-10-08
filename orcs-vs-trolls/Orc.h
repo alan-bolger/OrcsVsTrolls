@@ -8,7 +8,7 @@ class Orc : public Character
 public:
 	Orc();
 	~Orc();
-	void barrelRoll();
+	void fly() { std::cout << "The Orc is flying....." << std::endl; }
+	void specialAbility();
 	void walk();
-	void fly();
 };

@@ -13,11 +13,11 @@ Character::~Character()
 
 void Character::flip()
 {
-	std::cout << "I know how to flip and I will flipping do it" << std::endl;
+	std::cout << "The character is flipping....." << std::endl;
 }
 
 void Character::walk()
 {
-	std::cout << "just in case they are too young to walk yet" << std::endl;
+	std::cout << "The character is walking....." << std::endl;
 }
 
