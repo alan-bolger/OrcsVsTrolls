@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <string>
 
 class Character
 {
@@ -9,7 +10,8 @@ public:
 	virtual ~Character();
 	void flip();
 	virtual void walk();
-	virtual void fly() = 0; // Pure virtual function
+	// virtual void attack() = 0;
+	virtual void displayStats() = 0;
 
 	struct stats
 	{

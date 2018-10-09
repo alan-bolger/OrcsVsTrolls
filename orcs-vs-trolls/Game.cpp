@@ -34,45 +34,11 @@ Game::~Game()
 void Game::run()
 {
 	loop = true;
-	createCharacters();
 	introduction();
 	chooseSide();
 	beginBattle();
 }
 					 
-void Game::createCharacters()
-{
-	//cout << "Let go virtual" << endl;
-	//Character character;
-	//character.flip();
-	//character.walk();
-
-	//Orc orc;
-	//orc.walk();
-	//orc.fly();
-	//orc.flip();
-	//print(PrintType::LINE);
-
-	//cout << "Let go create an Troll" << endl;
-	//Troll troll;
-	//troll.walk();
-	//troll.fly();
-	//troll.flip();
-	//print(PrintType::LINE);
-
-	//Character* npc = &orc;
-	//npc->flip();
-	//npc->fly();
-	//npc->walk();
-	//print(PrintType::LINE);
-
-	//npc = &troll;
-	//npc->flip();
-	//npc->fly();
-	//npc->walk();
-	//print(PrintType::LINE);
-}
-
 // Overloaded function to insert a line or a break
 void Game::print(PrintType t_type)
 {
@@ -160,6 +126,11 @@ void Game::chooseSide()
 			print("You have chosen to play as the Orcs.");
 			print(PrintType::LINE);
 			chosenSide = Side::ORCS;
+
+			// Set pointers
+			player = &orc;
+			computer = &troll;
+
 			loop = false;
 			break;
 
@@ -169,6 +140,11 @@ void Game::chooseSide()
 			print("You have chosen to play as the Trolls.");
 			print(PrintType::LINE);
 			chosenSide = Side::TROLLS;
+
+			// Set pointers
+			player = &troll;
+			computer = &orc;
+
 			loop = false;
 			break;
 
@@ -181,7 +157,6 @@ void Game::chooseSide()
 		}
 	}
 
-	print(PrintType::SPACE);
 	system("Pause");
 	system("CLS");
 }
@@ -191,35 +166,6 @@ void Game::beginBattle()
 {
 	gamePlayInput();
 	system("Pause");
-}
-
-// Display player stats
-void Game::showStats(Side t_side)
-{
-	print(PrintType::LINE);
-
-	switch (t_side)
-	{
-	case Side::ORCS:
-		print("YOUR STATS (ORC)");
-		print("----------------");
-		print("Attack:       " + std::to_string(orc.attributes.attack));
-		print("Defense:      " + std::to_string(orc.attributes.defence));
-		print("Intelligence: " + std::to_string(orc.attributes.intelligence));
-		print("Charisma:     " + std::to_string(orc.attributes.charisma));
-		print("Luck:         " + std::to_string(orc.attributes.luck));
-		break;
-
-	case Side::TROLLS:
-		print("YOUR STATS (TROLL)");
-		print("------------------");
-		print("Attack:       " + std::to_string(troll.attributes.attack));
-		print("Defense:      " + std::to_string(troll.attributes.defence));
-		print("Intelligence: " + std::to_string(troll.attributes.intelligence));
-		print("Charisma:     " + std::to_string(troll.attributes.charisma));
-		print("Luck:         " + std::to_string(troll.attributes.luck));
-		break;
-	}
 }
 
 // Show inventory
@@ -236,8 +182,7 @@ void Game::showInventory()
 	}
 
 	print(PrintType::LINE);
-	print("To exit your inventory, enter the number 0");
-	numInput = numberInput("To use an item, enter its pocket number (1 to 5)");
+	numInput = numberInput("To use an item, enter its pocket number (0 to exit)");
 
 	if (numInput < 0 || numInput > 5)
 	{
@@ -261,36 +206,18 @@ void Game::useItem(int t_input)
 	else if (lootTable[t_input - 1] == LootType::KNIFE)
 	{
 		print(PrintType::LINE);
-		print("You have equipped the knife and gained +5 attack points!");
+		print("You have equipped the knife and gained +20 attack points!");
 
-		// Buff attack
-		if (chosenSide == Side::ORCS)
-		{
-			orc.attributes.attack += 5;
-		}
-		else
-		{
-			troll.attributes.attack += 5;
-		}
-		
-		lootTable[t_input - 1] = LootType::EMPTY;
+		player->attributes.attack += 20;		
+		lootTable[t_input - 1] = LootType::EMPTY; // Empty pocket
 	}
 	else if (lootTable[t_input - 1] == LootType::SHIELD)
 	{
 		print(PrintType::LINE);
 		print("You have equipped the shield and gained +5 defence points!");
 
-		// Buff defence
-		if (chosenSide == Side::ORCS)
-		{
-			orc.attributes.defence += 5;
-		}
-		else
-		{
-			troll.attributes.defence += 5;
-		}
-
-		lootTable[t_input - 1] = LootType::EMPTY;
+		player->attributes.defence += 5;
+		lootTable[t_input - 1] = LootType::EMPTY; // Empty pocket
 	}
 	else if (lootTable[t_input - 1] == LootType::SUDOKU_PUZZLE)
 	{
@@ -298,91 +225,114 @@ void Game::useItem(int t_input)
 		print("You've completed the sudoku puzzle and gained +5");
 		print("intelligence points!");
 
-		// Buff intelligence
-		if (chosenSide == Side::ORCS)
-		{
-			orc.attributes.intelligence += 5;
-		}
-		else
-		{
-			troll.attributes.intelligence += 5;
-		}
-
-		lootTable[t_input - 1] = LootType::EMPTY;
+		player->attributes.intelligence += 5;
+		lootTable[t_input - 1] = LootType::EMPTY; // Empty pocket
 	}
 	else if (lootTable[t_input - 1] == LootType::BOTTLE_OF_BEER)
 	{
 		print(PrintType::LINE);
 		print("You have drank the beer and gained +5 charisma points!");
 
-		// Buff charisma
-		if (chosenSide == Side::ORCS)
-		{
-			orc.attributes.charisma += 5;
-		}
-		else
-		{
-			troll.attributes.charisma += 5;
-		}
-
-		lootTable[t_input - 1] = LootType::EMPTY;
+		player->attributes.charisma += 5;
+		lootTable[t_input - 1] = LootType::EMPTY; // Empty pocket
 	}
 	else if (lootTable[t_input - 1] == LootType::RABBIT_FOOT)
 	{
 		print(PrintType::LINE);
 		print("You've equipped the rabbit's foot and gained +15 luck points!");
 
-		// Buff luck
-		if (chosenSide == Side::ORCS)
-		{
-			orc.attributes.luck += 5;
-		}
-		else
-		{
-			troll.attributes.luck += 5;
-		}
-
-		lootTable[t_input - 1] = LootType::EMPTY;
+		player->attributes.luck += 15;
+		lootTable[t_input - 1] = LootType::EMPTY; // Empty pocket
 	}
 }
 
 // Explore arena
 void Game::exploreArena()
 {
-	if (chosenSide == Side::ORCS)
+	if (player->attributes.attack <= 15)
 	{
-		if (orc.attributes.attack <= 15)
-		{
-			print(PrintType::LINE);
-			print("If you orc around any more, you'll have no attack points!");
-		}
-		else
-		{
-			orc.attributes.attack -= 15;
-			exploreResult();
-		}
+		print(PrintType::LINE);
+		print("You don't have enough attack points to do that!");
 	}
 	else
 	{
-		if (troll.attributes.attack <= 15)
-		{
-			print(PrintType::LINE);
-			print("If you troll any more, you'll have no attack points!");
-		}
-		else
-		{
-			troll.attributes.attack -= 15;
-			exploreResult();
-		}
+		print(PrintType::LINE);
+		player->attributes.attack -= 15;
+		exploreResult();
 	}
 }
 
 // Exploration result
 void Game::exploreResult()
 {
-	int randomNum = std::rand() % 100 + 1;
+	int randomNum = std::rand() % 50 + 1;
 
+	if ((randomNum / 2) + player->attributes.luck > 30)
+	{
+		print("You've found something!");
 
+		randomNum = std::rand() % 5;
+
+		switch (randomNum)
+		{
+		case 0:
+			print("It's a knife! A pointy knife! Yay!");
+			print("Using a knife will boost your attack by 20 points!");
+			pickUp(LootType::KNIFE);
+			break;
+
+		case 1:
+			print("It's a shield that looks a bit like a dustbin lid");
+			print("Using a shield will boost your defence by 5 points!");
+			pickUp(LootType::SHIELD);
+			break;
+
+		case 2:
+			print("It's a sudoku puzzle! WTF?!?");
+			print("Doing a puzzle will boost your intelligence by 5 points!");
+			pickUp(LootType::SUDOKU_PUZZLE);
+			break;
+
+		case 3:
+			print("It's a bottle of Fairy beer! Lovely stuff.");
+			print("Use this to boost charisma by 5 points!");
+			pickUp(LootType::BOTTLE_OF_BEER);
+			break;
+
+		case 4:
+			print("Gross, it's a rabbit's foot. These things are lucky.");
+			print("Using a rabbit's foot will boost your luck by 15 points!");
+			pickUp(LootType::RABBIT_FOOT);
+			break;
+		}
+	}
+	else
+	{
+		print("You've found nothing (and wasted 15 attack points).");
+	}
+}
+
+// Pickup loot is there's room in your inventory
+void Game::pickUp(LootType t_type)
+{
+	for (int i = 0; i < MAX_LOOT;)
+	{
+		if (lootTable[i] == LootType::EMPTY)
+		{
+			lootTable[i] = t_type;
+			break;
+		}
+		else
+		{
+			i++;
+
+			if (i > 4)
+			{
+				print("You can't pick that up as there's no more room in your pockets!");
+				print("You can make room in your inventory by using items");
+			}
+		}
+	}
 }
 
 // Main input
@@ -393,15 +343,18 @@ void Game::gamePlayInput()
 	while (loop)
 	{
 		print(PrintType::LINE);
-		print("S - Show stats    | I - Inventory    | B - Begin battle");
-		print("E - Explore arena | C - Clear window | X - Exit game");
+		print("S - Show your stats  | I - Inventory     | B - Begin battle");
+		print("O - Opponent's stats | E - Explore arena | C - Clear window");
+		print("X - Exit game");
 		std::cin >> textInput;
 
 		switch (textInput)
 		{
 		case 'S': // Show stats
 		case 's':
-			showStats(chosenSide);
+			print(PrintType::LINE);
+			print("YOUR STATS:");
+			player->displayStats();
 			break;
 
 		case 'I': // Show inventory (loot table)
@@ -413,9 +366,16 @@ void Game::gamePlayInput()
 		case 'b':
 			break;
 
+		case 'O': // Show opponents stats
+		case 'o':
+			print(PrintType::LINE);
+			print("OPPONENT'S STATS:");
+			computer->displayStats();
+			break;
+
 		case 'E': // Explore arena
-			exploreArena();
 		case 'e':
+			exploreArena();
 			break;
 
 		case 'C': // Clear window
