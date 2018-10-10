@@ -15,6 +15,7 @@ public:
 	virtual void punch(Character *t_object) = 0;
 	virtual void specialAbility(Character *t_object) = 0;
 	virtual void displayStats() = 0;
+	bool checkIfDead();
 
 	struct
 	{

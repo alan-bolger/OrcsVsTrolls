@@ -406,12 +406,22 @@ void Game::battleArena()
 	{
 		if (humanTurn)
 		{
+			// Check if the computer is dead
+			if (computer->checkIfDead())
+			{
+				print(PrintType::LINE);
+				print("Yay! You won! Congratulations!");
+				print(PrintType::LINE);
+				system("Pause");
+				exit(0);
+			}
+
 			print(PrintType::LINE);
 			print("It is your turn. Choose your attack.");
 			print(PrintType::LINE);
-			print("R - Rest      | C - Crotch kick | U - Uppercut");
-			print("E - Eye gouge | P - Punch       | S - Special ability");
-			print("I - Show inventory");
+			print("R - Rest       | C - Crotch kick      | U - Uppercut");
+			print("E - Eye gouge  | P - Punch            | A - Special ability");
+			print("S - Show stats | O - Opponent's stats | I - Show inventory");
 			std::cin >> textInput;
 
 			switch (textInput)
@@ -420,36 +430,56 @@ void Game::battleArena()
 			case 'r':
 				print(PrintType::LINE);
 				player->rest();
+				humanTurn = false;
 				break;
 
 			case 'C': // Crotch kick
 			case 'c':
 				print(PrintType::LINE);
 				player->crotchKick(computer);
+				humanTurn = false;
 				break;
 
 			case 'U': // Uppercut
 			case 'u':
 				print(PrintType::LINE);
 				player->uppercut(computer);
+				humanTurn = false;
 				break;
 
 			case 'E': // Eye gouge
 			case 'e':
 				print(PrintType::LINE);
 				player->eyeGouge(computer);
+				humanTurn = false;
 				break;
 
 			case 'P': // Punch
 			case 'p':
 				print(PrintType::LINE);
 				player->punch(computer);
+				humanTurn = false;
 				break;
 
-			case 'S': // Special ability
-			case 's':
+			case 'A': // Special ability
+			case 'a':
 				print(PrintType::LINE);
 				player->specialAbility(computer);
+				humanTurn = false;
+				break;
+
+			case 'S': // Show stats
+			case 's':
+				print(PrintType::LINE);
+				print("YOUR STATS:");
+				player->displayStats();
+				break;
+
+			case 'O': // Opponent's stats
+			case 'o':
+				print(PrintType::LINE);
+				print("OPPONENT'S STATS:");
+				computer->displayStats();
 				break;
 
 			case 'I': // Show inventory
@@ -462,11 +492,19 @@ void Game::battleArena()
 				print("That is not a valid command! Try again!");
 				break;
 			}
-
-			humanTurn = false;
 		}
 		else
 		{
+			// Check if the player is dead
+			if (player->checkIfDead())
+			{
+				print(PrintType::LINE);
+				print("Oh dear. You died horribly. Game over!");
+				print(PrintType::LINE);
+				system("Pause");
+				exit(0);
+			}
+
 			print(PrintType::LINE);
 			print("It's the opponents turn.");
 
@@ -475,35 +513,39 @@ void Game::battleArena()
 			case 0: // Rest
 				print(PrintType::LINE);
 				computer->rest();
+				humanTurn = true;
 				break;
 
 			case 1: // Crotch kick
 				print(PrintType::LINE);
 				computer->crotchKick(player);
+				humanTurn = true;
 				break;
 
 			case 2: // Uppercut
 				print(PrintType::LINE);
 				computer->uppercut(player);
+				humanTurn = true;
 				break;
 
 			case 3: // Eye gouge
 				print(PrintType::LINE);
 				computer->eyeGouge(player);
+				humanTurn = true;
 				break;
 
 			case 4: // Punch
 				print(PrintType::LINE);
 				computer->punch(player);
+				humanTurn = true;
 				break;
 
 			case 5: // Special ability
 				print(PrintType::LINE);
 				computer->specialAbility(player);
+				humanTurn = true;
 				break;
 			}
-
-			humanTurn = true;
 		}
 	}
 }
