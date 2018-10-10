@@ -8,12 +8,15 @@ class Character
 public:
 	Character();
 	virtual ~Character();
-	void flip();
-	virtual void walk();
-	// virtual void attack() = 0;
+	virtual void rest() = 0;
+	virtual void crotchKick(Character *t_object) = 0;
+	virtual void uppercut(Character *t_object) = 0;
+	virtual void eyeGouge(Character *t_object) = 0;
+	virtual void punch(Character *t_object) = 0;
+	virtual void specialAbility(Character *t_object) = 0;
 	virtual void displayStats() = 0;
 
-	struct stats
+	struct
 	{
 		int attack;
 		int defence;

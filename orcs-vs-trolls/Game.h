@@ -44,7 +44,9 @@ private:
 
 	char textInput; // Input char
 	int numInput; // Input integer
-	bool loop;// Used to break out of loops
+	bool loop;// Used to keep while loops looping
+	bool humanTurn; // False if it's the computer's turn
+
 	Side chosenSide; // Enum type to store chosen side					 
 	Orc orc; // Create Orc	
 	Troll troll; // Create Troll
@@ -56,12 +58,13 @@ private:
 	void print(LootType t_type); // Overloaded function to print inventory contents
 	void introduction(); // Game intro
 	void chooseSide(); // Choose Orcs or Trolls
-	void beginBattle(); // Start main game
 	void showInventory(); // Show inventory (loot table)						  
 	void useItem(int t_input); // Check is item is valid and use							   
 	void exploreArena(); // Explore arena						 
 	void exploreResult(); // Exploration result
 	void pickUp(LootType t_type); // Pickup loot is there's room in your inventory
 	void gamePlayInput(); // Main input
+	void battleArena(); // The battle
+	void fightInput(); // Fight input
 	int numberInput(std::string t_input); // Number input with validation
 };

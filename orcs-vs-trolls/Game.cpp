@@ -31,12 +31,13 @@ Game::~Game()
 	// Destructor (not used)
 }
 
+// Runs the start of the game
 void Game::run()
 {
 	loop = true;
 	introduction();
 	chooseSide();
-	beginBattle();
+	gamePlayInput();
 }
 					 
 // Overloaded function to insert a line or a break
@@ -161,12 +162,7 @@ void Game::chooseSide()
 	system("CLS");
 }
 
-// Start main game
-void Game::beginBattle()
-{
-	gamePlayInput();
-	system("Pause");
-}
+
 
 // Show inventory
 void Game::showInventory()
@@ -364,6 +360,8 @@ void Game::gamePlayInput()
 
 		case 'B': // Begin battle
 		case 'b':
+			system("CLS");
+			battleArena();
 			break;
 
 		case 'O': // Show opponents stats
@@ -394,6 +392,126 @@ void Game::gamePlayInput()
 			break;
 		}
 	}
+}
+
+// The battle
+void Game::battleArena()
+{
+	humanTurn = true;
+
+	print(PrintType::LINE);
+	print("The battle has begun.");
+
+	while (loop)
+	{
+		if (humanTurn)
+		{
+			print(PrintType::LINE);
+			print("It is your turn. Choose your attack.");
+			print(PrintType::LINE);
+			print("R - Rest      | C - Crotch kick | U - Uppercut");
+			print("E - Eye gouge | P - Punch       | S - Special ability");
+			print("I - Show inventory");
+			std::cin >> textInput;
+
+			switch (textInput)
+			{
+			case 'R': // Rest
+			case 'r':
+				print(PrintType::LINE);
+				player->rest();
+				break;
+
+			case 'C': // Crotch kick
+			case 'c':
+				print(PrintType::LINE);
+				player->crotchKick(computer);
+				break;
+
+			case 'U': // Uppercut
+			case 'u':
+				print(PrintType::LINE);
+				player->uppercut(computer);
+				break;
+
+			case 'E': // Eye gouge
+			case 'e':
+				print(PrintType::LINE);
+				player->eyeGouge(computer);
+				break;
+
+			case 'P': // Punch
+			case 'p':
+				print(PrintType::LINE);
+				player->punch(computer);
+				break;
+
+			case 'S': // Special ability
+			case 's':
+				print(PrintType::LINE);
+				player->specialAbility(computer);
+				break;
+
+			case 'I': // Show inventory
+			case 'i':
+				showInventory();
+				break;
+
+			default:
+				print(PrintType::LINE);
+				print("That is not a valid command! Try again!");
+				break;
+			}
+
+			humanTurn = false;
+		}
+		else
+		{
+			print(PrintType::LINE);
+			print("It's the opponents turn.");
+
+			switch (std::rand() % 6) // Each move has a 1 in 6 chance of happening
+			{
+			case 0: // Rest
+				print(PrintType::LINE);
+				computer->rest();
+				break;
+
+			case 1: // Crotch kick
+				print(PrintType::LINE);
+				computer->crotchKick(player);
+				break;
+
+			case 2: // Uppercut
+				print(PrintType::LINE);
+				computer->uppercut(player);
+				break;
+
+			case 3: // Eye gouge
+				print(PrintType::LINE);
+				computer->eyeGouge(player);
+				break;
+
+			case 4: // Punch
+				print(PrintType::LINE);
+				computer->punch(player);
+				break;
+
+			case 5: // Special ability
+				print(PrintType::LINE);
+				computer->specialAbility(player);
+				break;
+			}
+
+			humanTurn = true;
+		}
+	}
+}
+
+// Fight input
+void Game::fightInput()
+{
+
 }
 
 // Take user input for numbers
